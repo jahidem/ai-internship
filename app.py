@@ -78,17 +78,17 @@ class CVAE(nn.Module):
 
 # --- 2. Model Loading with Caching ---
 # @st.cache_resource decorator ensures the model is loaded only once
-# across all user sessions and reruns, optimizing performance. [1, 2]
+# across all user sessions and reruns, optimizing performance.
 @st.cache_resource
 def load_cvae_model(model_path):
     # Streamlit Community Cloud typically runs on CPU, so force map_location to 'cpu'.
-    device = torch.device('cpu') # [3]
+    device = torch.device('cpu') [1]
     
     model = CVAE(input_dim=image_size * image_size, latent_dim=latent_dim, num_classes=num_classes).to(device)
     
-    # Load the state_dict, ensuring it's mapped to the CPU. [4, 3]
+    # Load the state_dict, ensuring it's mapped to the CPU. [2, 3]
     model.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
-    model.eval() # Set the model to evaluation mode for consistent inference results. [4, 5]
+    model.eval() # Set the model to evaluation mode for consistent inference results.
     return model
 
 # Define the path to your trained model file.
@@ -120,8 +120,8 @@ selected_digit = st.selectbox(
 if st.button("Generate Images"):
     st.subheader(f"Generated images of digit {selected_digit}")
 
-    generated_images_list =
-    captions_list =
+    generated_images_list = # Corrected: Initialize as an empty list
+    captions_list = # Corrected: Initialize as an empty list
     num_samples_to_generate = 5 # Generate 5 images as per the requirement. [User Query]
 
     # Generate multiple images for the selected digit.
@@ -139,14 +139,14 @@ if st.button("Generate Images"):
         # Convert the PyTorch tensor to a NumPy array and then to a PIL Image for display.
         # Squeeze removes singleton dimensions (e.g., batch and channel dimensions).
         img_np = img_tensor.squeeze().cpu().numpy()
-        # Scale pixel values from  to  and convert to uint8 for PIL.
+        # Scale pixel values from 0-1 to 0-255 and convert to uint8 for PIL.
         img_pil = Image.fromarray((img_np * 255).astype(np.uint8))
         
         generated_images_list.append(img_pil)
         captions_list.append(f"Sample {i+1}")
 
     # Display the generated images side-by-side with captions.
-    # st.image can take a list of images and a list of captions. [6]
+    # st.image can take a list of images and a list of captions. [4]
     st.image(generated_images_list, caption=captions_list, width=100) # Adjust width for optimal display.
 
 st.markdown("---")
