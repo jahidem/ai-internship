@@ -120,8 +120,8 @@ selected_digit = st.selectbox(
 if st.button("Generate Images"):
     st.subheader(f"Generated images of digit {selected_digit}")
 
-    generated_images_list = # Corrected: Initialize as an empty list
-    captions_list = # Corrected: Initialize as an empty list
+    generated_images_list = []# Corrected: Initialize as an empty list
+    captions_list = []# Corrected: Initialize as an empty list
     num_samples_to_generate = 5 # Generate 5 images as per the requirement. [User Query]
 
     # Generate multiple images for the selected digit.
