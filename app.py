@@ -82,13 +82,13 @@ class CVAE(nn.Module):
 @st.cache_resource
 def load_cvae_model(model_path):
     # Streamlit Community Cloud typically runs on CPU, so force map_location to 'cpu'.
-    device = torch.device('cpu') [1]
+    device = torch.device('cpu') # [2]
     
     model = CVAE(input_dim=image_size * image_size, latent_dim=latent_dim, num_classes=num_classes).to(device)
     
-    # Load the state_dict, ensuring it's mapped to the CPU. [2, 3]
+    # Load the state_dict, ensuring it's mapped to the CPU. [3, 4]
     model.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
-    model.eval() # Set the model to evaluation mode for consistent inference results.
+    model.eval() # Set the model to evaluation mode for consistent inference results. [3, 4]
     return model
 
 # Define the path to your trained model file.
@@ -146,7 +146,7 @@ if st.button("Generate Images"):
         captions_list.append(f"Sample {i+1}")
 
     # Display the generated images side-by-side with captions.
-    # st.image can take a list of images and a list of captions. [4]
+    # st.image can take a list of images and a list of captions. [5, 6]
     st.image(generated_images_list, caption=captions_list, width=100) # Adjust width for optimal display.
 
 st.markdown("---")
